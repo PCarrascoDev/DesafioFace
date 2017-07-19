@@ -3,11 +3,33 @@ package com.desafiolatam.desafioface.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import com.desafiolatam.desafioface.network.GetUsers;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RecentUsersService extends IntentService {
-    private static final String UPDATE = "com.desafiolatam.desafioface.services.action.FOO";
+    private static final String UPDATE = "com.desafiolatam.desafioface.services.action.UPDATE";
+    public static final String UPDATE_USERS = "com.desafiolatam.desafioface.services.action.UPDATE_USERS";
+
+    private class UpdateUsers extends GetUsers{
+
+        public UpdateUsers(int additionalPages) {
+            super(additionalPages);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            Intent intent = new Intent();
+            intent.setAction(UPDATE_USERS);
+            LocalBroadcastManager.getInstance(RecentUsersService.this).sendBroadcast(intent);
+        }
+    }
 
     public RecentUsersService() {
         super("RecentUsersService");
@@ -30,8 +52,12 @@ public class RecentUsersService extends IntentService {
     }
 
     private void handleActionUpdate() {
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             Log.d("TAG", "handleActionUpdate: sdasd");
-        }
+        }*/
+
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("page", "1");
+        new UpdateUsers(5).execute(queryParams);
     }
 }

@@ -1,8 +1,12 @@
 package com.desafiolatam.desafioface.views.login;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +27,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback{
     private TextInputLayout emailTil, passwordTil;
     private EditText emailEt, passwordEt;
     private Button button;
+    private IntentFilter intentFilter;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,33 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback{
                 new Login().session(email, password);
             }
         });
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(RecentUsersService.UPDATE_USERS);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (RecentUsersService.UPDATE_USERS.equals(intent.getAction()))
+                {
+                    Toast.makeText(LoginActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
     private void restoreViews()
