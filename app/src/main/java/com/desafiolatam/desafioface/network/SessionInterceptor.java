@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SessionInterceptor {
 
-    private static final String BASE_URL = "https://empieza.desafiolatam.com/";
+    public static final String BASE_URL = "https://empieza.desafiolatam.com/";
 
     public Session get(){
         Retrofit interceptor = new Retrofit.Builder()
