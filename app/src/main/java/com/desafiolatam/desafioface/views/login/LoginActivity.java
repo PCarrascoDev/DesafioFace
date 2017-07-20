@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback{
                 button.setVisibility(View.GONE);
                 emailTil.setError(null);
                 passwordTil.setError(null);
-                new Login().session(email, password);
+                new Login(LoginActivity.this).session(email, password);
             }
         });
 

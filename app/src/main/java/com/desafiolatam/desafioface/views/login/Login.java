@@ -16,6 +16,10 @@ public class Login {
 
     private LoginCallback callback;
 
+    public Login(LoginCallback callback) {
+        this.callback = callback;
+    }
+
     public void session(String email, String password)
     {
         if (email.contains("@") && email.contains("."))
