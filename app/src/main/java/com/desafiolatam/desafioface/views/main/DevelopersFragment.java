@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.desafiolatam.desafioface.R;
+import com.desafiolatam.desafioface.adapters.DevelopersAdapter;
+import com.desafiolatam.desafioface.network.GetUsers;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,8 @@ import com.desafiolatam.desafioface.R;
 public class DevelopersFragment extends Fragment {
 
     private SwipeRefreshLayout reload;
+    private DevelopersAdapter adapter;
+    private boolean pendingRequest = false;
 
     public DevelopersFragment() {
         // Required empty public constructor
@@ -41,9 +48,51 @@ public class DevelopersFragment extends Fragment {
 
         recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         linearLayoutManager.findLastCompletelyVisibleItemPosition();
+        adapter = new DevelopersAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int position = linearLayoutManager.findLastVisibleItemPosition();
+                int total = linearLayoutManager.getItemCount();
+                if (total - position < 10)
+                {
+                    if (!pendingRequest)
+                    {
+                        Map<String, String> queryParams = new HashMap<>();
+                        queryParams.put("page", String.valueOf(total/10));
+
+                        new ScrollRequest(3).execute(queryParams);
+
+                    }
+                }
+            }
+        });
+    }
+
+    private class ScrollRequest extends GetUsers {
+
+        public ScrollRequest(int additionalPages) {
+            super(additionalPages);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pendingRequest = true;
+            reload.setRefreshing(true);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            pendingRequest = false;
+            reload.setRefreshing(false);
+        }
     }
 }
