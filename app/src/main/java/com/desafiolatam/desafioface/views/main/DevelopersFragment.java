@@ -75,6 +75,10 @@ public class DevelopersFragment extends Fragment {
         });
     }
 
+    public void updateAdapter() {
+        adapter.find();
+    }
+
     private class ScrollRequest extends GetUsers {
 
         public ScrollRequest(int additionalPages) {

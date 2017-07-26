@@ -22,6 +22,8 @@ import com.desafiolatam.desafioface.R;
 
 public class MainActivity extends AppCompatActivity implements FinderCallback{
 
+    private DevelopersFragment developersFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements FinderCallback{
             }
         });
 
+        developersFragment = (DevelopersFragment) getSupportFragmentManager().findFragmentById(R.id.developersFragment);
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -64,6 +69,6 @@ public class MainActivity extends AppCompatActivity implements FinderCallback{
 
     @Override
     public void queryDone() {
-        Toast.makeText(this, "Funcionó!", Toast.LENGTH_SHORT).show();
+        developersFragment.updateAdapter();
     }
 }

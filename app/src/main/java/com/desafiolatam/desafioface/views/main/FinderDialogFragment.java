@@ -43,8 +43,8 @@ public class FinderDialogFragment extends DialogFragment {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            dismiss();
             callback.queryDone();
+            dismiss();
         }
     }
 
@@ -67,7 +67,7 @@ public class FinderDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         final EditText searchEt = (EditText) view.findViewById(R.id.searchEt);
-        ImageButton searchButton = (ImageButton) view.findViewById(R.id.searchBtn);
+        final ImageButton searchButton = (ImageButton) view.findViewById(R.id.searchBtn);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +85,9 @@ public class FinderDialogFragment extends DialogFragment {
                     Map<String, String> queryParams = new HashMap<>();
                     queryParams.put("page", "1");
                     queryParams.put("name", text);
+                    searchEt.setVisibility(View.INVISIBLE);
+                    searchButton.setVisibility(View.INVISIBLE);
+                    
                     new SearchUsers(-1).execute(queryParams);
                 }
             }
