@@ -75,8 +75,8 @@ public class DevelopersFragment extends Fragment {
         });
     }
 
-    public void updateAdapter() {
-        adapter.find();
+    public void updateAdapter(String name) {
+        adapter.find(name);
     }
 
     private class ScrollRequest extends GetUsers {

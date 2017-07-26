@@ -29,6 +29,7 @@ import java.util.Objects;
 public class FinderDialogFragment extends DialogFragment {
 
     private FinderCallback callback;
+    private String name;
 
     public static FinderDialogFragment newInstance() {
         return new FinderDialogFragment();
@@ -43,7 +44,7 @@ public class FinderDialogFragment extends DialogFragment {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            callback.queryDone();
+            callback.queryDone(name);
             dismiss();
         }
     }
@@ -72,9 +73,9 @@ public class FinderDialogFragment extends DialogFragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = searchEt.getText().toString();
+                name = searchEt.getText().toString();
 
-                if (text.trim().length() > 0)
+                if (name.trim().length() > 0)
                 {
                     setCancelable(false);
                     /*Map<String, String> queryParams = new HashMap<>();
@@ -84,10 +85,10 @@ public class FinderDialogFragment extends DialogFragment {
 
                     Map<String, String> queryParams = new HashMap<>();
                     queryParams.put("page", "1");
-                    queryParams.put("name", text);
+                    queryParams.put("name", name);
                     searchEt.setVisibility(View.INVISIBLE);
                     searchButton.setVisibility(View.INVISIBLE);
-                    
+
                     new SearchUsers(-1).execute(queryParams);
                 }
             }

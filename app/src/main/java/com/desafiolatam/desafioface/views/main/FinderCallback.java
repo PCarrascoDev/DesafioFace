@@ -5,5 +5,5 @@ package com.desafiolatam.desafioface.views.main;
  */
 
 public interface FinderCallback {
-    void queryDone();
+    void queryDone(String name);
 }

@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements FinderCallback{
     }
 
     @Override
-    public void queryDone() {
-        developersFragment.updateAdapter();
+    public void queryDone(String name) {
+        developersFragment.updateAdapter(name);
     }
 }
