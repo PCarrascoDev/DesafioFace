@@ -2,6 +2,7 @@ package com.desafiolatam.desafioface.views.main;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -73,9 +74,24 @@ public class DevelopersFragment extends Fragment {
                 }
             }
         });
+
+        reload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.update();
+                        pendingRequest = false;
+                        reload.setRefreshing(false);
+                    }
+                }, 888);
+            }
+        });
     }
 
     public void updateAdapter(String name) {
+        pendingRequest = false;
         adapter.find(name);
     }
 

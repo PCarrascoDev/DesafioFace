@@ -98,7 +98,7 @@ public class DevelopersAdapter extends RecyclerView.Adapter<DevelopersAdapter.Vi
 
     public void find(String name) {
         developers.clear();
-        //developers.addAll(new DeveloperQueries().findByName(name));
+        developers.addAll(new DeveloperQueries().findByName(name));
         notifyDataSetChanged();
     }
 
