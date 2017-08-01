@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.desafiolatam.desafioface.R;
 import com.desafiolatam.desafioface.services.RecentUsersService;
 import com.desafiolatam.desafioface.views.main.MainActivity;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginCallback{
@@ -92,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback{
 
     @Override
     public void success() {
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d("LOGIN_TOKEN", token);
         RecentUsersService.startActionUpdate(this);
        /* Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class));
