@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.desafiolatam.desafioface.R;
+import com.desafiolatam.desafioface.network.PutFcmToken;
 import com.desafiolatam.desafioface.services.RecentUsersService;
 import com.desafiolatam.desafioface.views.main.MainActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -96,10 +97,9 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback{
     public void success() {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d("LOGIN_TOKEN", token);
+        new PutFcmToken().execute(token);
         RecentUsersService.startActionUpdate(this);
-       /* Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();*/
+
     }
 
     @Override
