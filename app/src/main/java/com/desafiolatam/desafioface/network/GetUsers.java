@@ -1,8 +1,12 @@
 package com.desafiolatam.desafioface.network;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.desafiolatam.desafioface.app.DesafioApp;
 import com.desafiolatam.desafioface.models.Developer;
 
 import java.io.IOException;
@@ -18,17 +22,22 @@ import retrofit2.Response;
 
 public class GetUsers extends AsyncTask<Map<String, String>, Integer, Integer> {
 
+    private int additionalPages;
+    private Map<String, String> queryMap;
+    private int result;
+    private final Users request = new UsersInterceptor().get();
+    private Context context = null;
 
-        private int additionalPages;
-        private Map<String, String> queryMap;
-        private int result;
-        private final Users request = new UsersInterceptor().get();
-
-        public GetUsers(int additionalPages) {
+    /*public GetUsers(int additionalPages) {
             this.additionalPages = additionalPages;
-        }
+        }*/
 
-        @Override
+    public GetUsers(int additionalPages, Context context) {
+        this.additionalPages = additionalPages;
+        this.context = context;
+    }
+
+    @Override
         protected Integer doInBackground(Map<String, String>... params) {
             queryMap = params[0];
             if (additionalPages < 0) {
@@ -89,5 +98,15 @@ public class GetUsers extends AsyncTask<Map<String, String>, Integer, Integer> {
             return result;
         }
 
+    @Override
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
 
+        if (context != null && integer == 500)
+        {
+            Intent intent = new Intent();
+            intent.setAction(DesafioApp.EXPIRED_SESSION);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        }
     }
+}

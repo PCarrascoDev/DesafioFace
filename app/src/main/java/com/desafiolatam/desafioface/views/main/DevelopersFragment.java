@@ -1,6 +1,7 @@
 package com.desafiolatam.desafioface.views.main;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -68,7 +69,7 @@ public class DevelopersFragment extends Fragment {
                         Map<String, String> queryParams = new HashMap<>();
                         queryParams.put("page", String.valueOf(total/10));
 
-                        new ScrollRequest(3).execute(queryParams);
+                        new ScrollRequest(3, getContext()).execute(queryParams);
 
                     }
                 }
@@ -97,8 +98,9 @@ public class DevelopersFragment extends Fragment {
 
     private class ScrollRequest extends GetUsers {
 
-        public ScrollRequest(int additionalPages) {
-            super(additionalPages);
+
+        public ScrollRequest(int additionalPages, Context context) {
+            super(additionalPages, context);
         }
 
         @Override

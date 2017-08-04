@@ -18,8 +18,9 @@ public class RecentUsersService extends IntentService {
 
     private class UpdateUsers extends GetUsers{
 
-        public UpdateUsers(int additionalPages) {
-            super(additionalPages);
+
+        public UpdateUsers(int additionalPages, Context context) {
+            super(additionalPages, context);
         }
 
         @Override
@@ -58,6 +59,6 @@ public class RecentUsersService extends IntentService {
 
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("page", "1");
-        new UpdateUsers(5).execute(queryParams);
+        new UpdateUsers(5, this).execute(queryParams);
     }
 }

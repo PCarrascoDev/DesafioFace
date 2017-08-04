@@ -37,8 +37,9 @@ public class FinderDialogFragment extends DialogFragment {
 
     private class SearchUsers extends GetUsers{
 
-        public SearchUsers(int additionalPages) {
-            super(additionalPages);
+
+        public SearchUsers(int additionalPages, Context context) {
+            super(additionalPages, context);
         }
 
         @Override
@@ -89,7 +90,7 @@ public class FinderDialogFragment extends DialogFragment {
                     searchEt.setVisibility(View.INVISIBLE);
                     searchButton.setVisibility(View.INVISIBLE);
 
-                    new SearchUsers(-1).execute(queryParams);
+                    new SearchUsers(-1, getContext()).execute(queryParams);
                 }
             }
         });
